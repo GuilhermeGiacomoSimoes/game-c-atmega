@@ -24,6 +24,17 @@ int y   = [5];
 int spaceship_x;
 int spaceship_y; 
 
+/*
+* variavel responsavel por armazenar a pontuacao
+*/
+int punctuation = 0;
+
+/*
+* variaveis responsavel por dizer a posicao da pontuacao na tela
+*/
+int punctuation_x = 0;	
+int punctuation_y = 0;
+
 void setup() {
 	pinMode(led, OUTPUT);
 	
@@ -62,7 +73,7 @@ void setup() {
 	* sorteando uma linha para cada asteroid
 	*/
 	for (int i=0; i<5; i++){
-		y[i] = random(0, tv.hres());
+		y[i] = random(1, tv.hres());
 	}
 
 	/*
@@ -73,7 +84,14 @@ void setup() {
 	spaceship_y = tv.hres() / 2;
 }
 
-void loop() {
+void loop() {	
+	
+	/*
+	* transformando o int em char[] para impressao na tela
+	*/
+	char buffer[33];
+	itoa( punctuation, buffer, 10 );	
+	tv.println( punctuation_x, punctuation_y,  buffer);
 
 	/*
 	* a posicao vertical da nave sera definida pelo valor lido do potenciometro
@@ -114,7 +132,7 @@ void loop() {
 		tv.set_pixel( x, y[i], WHITE );
 	}
 
-	idelay( 10 );
+	delay( 10 );
 
 	/*
 	* apaga o pixel para desenhar outro futuramente
@@ -132,8 +150,9 @@ void loop() {
 	*/
 	if( x > tv.hres()) {
 		for ( int i=0; i<5; i++ ) {
-			y[i] = random( 0, tv.hres() );
-			x    = 0;
+			y[i] 		= random( 0, tv.hres() );
+			x    		= 0;
+			punctuation	++;
 		}	
 	} else {
 		x++;
