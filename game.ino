@@ -4,7 +4,7 @@
 * e o potenciometro movimente a nave para desviar dos asteroides
 */
 
-#include<Tvout.h>
+#include<TVout.h>
 #include<video_gen.h>
 
 TVout tv;
@@ -16,7 +16,7 @@ TVout tv;
 */
 int led = 13;
 int x   = 0;
-int y   = [5];
+int y     [5];
 
 /*
 * variaveis que indicam a posicao da nave
