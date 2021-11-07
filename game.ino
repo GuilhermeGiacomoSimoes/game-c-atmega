@@ -89,9 +89,9 @@ void loop() {
 	/*
 	* transformando o int em char[] para impressao na tela
 	*/
-	char buffer[33];
-	itoa( punctuation, buffer, 10 );	
-	tv.println( punctuation_x, punctuation_y,  buffer);
+	//char buffer[33];
+	//itoa( punctuation, buffer, 10 );	
+	//tv.println( punctuation_x, punctuation_y,  buffer);
 
 	/*
 	* a posicao vertical da nave sera definida pelo valor lido do potenciometro
