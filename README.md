@@ -1,10 +1,10 @@
 # Rocket dodging asteroids
 
-## How to load in Atmega328p
-   make upload
+### How to load in Atmega328p
+   `make upload`
 
-# To show monitor
-   make upload monitor 
+### To show monitor
+   `make upload monitor `
 
-# To clean terminal after upload
-   make upload clean
+### To clean terminal after upload
+   `make upload clean`
