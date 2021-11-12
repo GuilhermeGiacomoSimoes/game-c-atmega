@@ -1,6 +1,9 @@
 # Rocket dodging asteroids
 
-### How to load in Atmega328p
+## Description
+   This game consists of a "rocket" that dodges the "asteroids".
+
+## How to load in Atmega328p
    `make upload`
 
 ### To show monitor
@@ -8,3 +11,4 @@
 
 ### To clean terminal after upload
    `make upload clean`
+
