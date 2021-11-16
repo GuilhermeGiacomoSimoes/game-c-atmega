@@ -33,35 +33,12 @@ void setup() {
 }
 
 void loop() {	
-	
-	int rocket_position = map( analogRead(A0), 0, 1024, 0, tv.vres() );
+	tv.clear_screen();
 
-	tv.draw_line( 
-		rocket_x, 
-		rocket_position - 2, 
-		rocket_x, 
-		rocket_position + 2, 
-		WHITE );
+	uint32_t rocket_position = map( analogRead(A0), 0, 1024, 0, tv.vres() );
 
-	delay( 10 );
-
-	tv.draw_line( 
-		rocket_x, 
-		rocket_position - 2, 
-		rocket_x, 
-		rocket_position + 2, 
-		BLACK );
-
-	
-	for(int i=0; i<5; i++){
-		tv.set_pixel( asteroids_x, asteroids_y[i], WHITE );
-	}
-
-	delay( 10 );
-
-	for(int i=0; i<5; i++){
-		tv.set_pixel( asteroids_x, asteroids_y[i], BLACK );
-	}
+	print_rocket(rocket_position);
+	print_asteroids();
 
 	if( asteroids_x > tv.hres()) {
 		for ( int i=0; i<5; i++ ) {
@@ -72,25 +49,49 @@ void loop() {
 		asteroids_x++;
 	}
 
+	if(asteroids_collided_with_the_rocket( rocket_position )){
+		game_over_bitch();
+	}
+
+	delay( 10 );
+}
+
+void print_rocket( uint32_t rocket_position ) {
+	tv.draw_line( rocket_x, rocket_position - 2, rocket_x, rocket_position + 2, WHITE ); 
+}
+
+void print_asteroids() {
+	for(int i=0; i<5; i++){
+		tv.set_pixel( asteroids_x, asteroids_y[i], WHITE );
+	}
+}
+
+bool asteroids_collided_with_the_rocket( uint32_t rocket_position) {
 	if ( asteroids_x >= rocket_x) {
 		for ( int i=0; i<5; i++ ) {
 			if((asteroids_y[i] >= rocket_position-2) && (asteroids_y[i] <= rocket_position + 2)) {
-				tv.clear_screen();
-				
-				for ( int d=0; d<tv.hres(); d++ ){
-					tv.draw_circle( tv.hres()/2, tv.vres()/2, d, WHITE );
-					delay( 10 );
-				}
-				
-				delay( 15000 );
-
-				for( int i=0; i<5; i++ ){
-					asteroids_y[i] = random( 0, tv.hres() );
-				}
-
-				tv.clear_screen();
+				return true;
 			}  
 		}		
-	}	
+	}
 
+	return false;
 }
+
+void game_over_bitch() {
+	tv.clear_screen();
+	
+	for ( int d=0; d<tv.hres(); d++ ){
+		tv.draw_circle( tv.hres()/2, tv.vres()/2, d, WHITE );
+		delay( 10 );
+	}
+	
+	delay( 15000 );
+
+	for( int i=0; i<5; i++ ){
+		asteroids_y[i] = random( 0, tv.hres() );
+	}
+
+	tv.clear_screen();
+}
+
