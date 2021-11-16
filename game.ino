@@ -3,38 +3,32 @@
 
 TVout tv;
 
-int led = 13;
-int x   = 0;
-int y     [5];
+const uint8_t FUNCTIONNING_INDICATIVE_LED = 13;
+uint32_t asteroids_x = 0;
+uint32_t asteroids_y[5];
 
-int spaceship_x;
-int spaceship_y; 
-
-int punctuation = 0;
-
-int punctuation_x = 0;	
-int punctuation_y = 0;
+uint32_t rocket_x;
+uint32_t rocket_y; 
 
 void setup() {
-	pinMode(led, OUTPUT);
+	pinMode(FUNCTIONNING_INDICATIVE_LED, OUTPUT);
+	
+	digitalWrite(FUNCTIONNING_INDICATIVE_LED, LOW);
 	
 	if(tv.begin(NTSC, 128, 96) == 0){
-		digitalWrite(led, HIGH);
+		digitalWrite(FUNCTIONNING_INDICATIVE_LED, HIGH);
 	}	
-	else {
-		digitalWrite(led, LOW);
-	}
-	
+
 	delay(1000);
 
 	randomSeed(analogRead(A5));
 	
 	for (int i=0; i<5; i++){
-		y[i] = random(1, tv.hres());
+		asteroids_y[i] = random(1, tv.hres());
 	}
 
-	spaceship_x = tv.hres() - 1;
-	spaceship_y = tv.hres() / 2;
+	rocket_x = tv.hres() - 1;
+	rocket_y = tv.hres() / 2;
 }
 
 void loop() {	
@@ -42,45 +36,44 @@ void loop() {
 	int ctrl = map( analogRead(A0), 0, 1024, 0, tv.vres() );
 
 	tv.draw_line( 
-		spaceship_x, 
+		rocket_x, 
 		ctrl - 2, 
-		spaceship_x, 
+		rocket_x, 
 		ctrl + 2, 
 		WHITE );
 
 	delay( 10 );
 
 	tv.draw_line( 
-		spaceship_x, 
+		rocket_x, 
 		ctrl - 2, 
-		spaceship_x, 
+		rocket_x, 
 		ctrl + 2, 
 		BLACK );
 
 	
 	for(int i=0; i<5; i++){
-		tv.set_pixel( x, y[i], WHITE );
+		tv.set_pixel( asteroids_x, asteroids_y[i], WHITE );
 	}
 
 	delay( 10 );
 
 	for(int i=0; i<5; i++){
-		tv.set_pixel( x, y[i], BLACK );
+		tv.set_pixel( asteroids_x, asteroids_y[i], BLACK );
 	}
 
-	if( x > tv.hres()) {
+	if( asteroids_x > tv.hres()) {
 		for ( int i=0; i<5; i++ ) {
-			y[i] 		= random( 0, tv.hres() );
-			x    		= 0;
-			punctuation	++;
+			asteroids_y[i] 		= random( 0, tv.hres() );
+			asteroids_x    		= 0;
 		}	
 	} else {
-		x++;
+		asteroids_x++;
 	}
 
-	if ( x >= spaceship_x) {
+	if ( asteroids_x >= rocket_x) {
 		for ( int i=0; i<5; i++ ) {
-			if((y[i] >= ctrl-2) && (y[i] <= ctrl + 2)) {
+			if((asteroids_y[i] >= ctrl-2) && (asteroids_y[i] <= ctrl + 2)) {
 				tv.clear_screen();
 				
 				for ( int d=0; d<tv.hres(); d++ ){
@@ -91,7 +84,7 @@ void loop() {
 				delay( 15000 );
 
 				for( int i=0; i<5; i++ ){
-					y[i] = random( 0, tv.hres() );
+					asteroids_y[i] = random( 0, tv.hres() );
 				}
 
 				tv.clear_screen();
