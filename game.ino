@@ -1,5 +1,6 @@
 #include<TVout.h>
 #include<video_gen.h>
+#include "game.h"
 
 TVout tv;
 
@@ -33,22 +34,22 @@ void setup() {
 
 void loop() {	
 	
-	int ctrl = map( analogRead(A0), 0, 1024, 0, tv.vres() );
+	int rocket_position = map( analogRead(A0), 0, 1024, 0, tv.vres() );
 
 	tv.draw_line( 
 		rocket_x, 
-		ctrl - 2, 
+		rocket_position - 2, 
 		rocket_x, 
-		ctrl + 2, 
+		rocket_position + 2, 
 		WHITE );
 
 	delay( 10 );
 
 	tv.draw_line( 
 		rocket_x, 
-		ctrl - 2, 
+		rocket_position - 2, 
 		rocket_x, 
-		ctrl + 2, 
+		rocket_position + 2, 
 		BLACK );
 
 	
@@ -73,7 +74,7 @@ void loop() {
 
 	if ( asteroids_x >= rocket_x) {
 		for ( int i=0; i<5; i++ ) {
-			if((asteroids_y[i] >= ctrl-2) && (asteroids_y[i] <= ctrl + 2)) {
+			if((asteroids_y[i] >= rocket_position-2) && (asteroids_y[i] <= rocket_position + 2)) {
 				tv.clear_screen();
 				
 				for ( int d=0; d<tv.hres(); d++ ){
